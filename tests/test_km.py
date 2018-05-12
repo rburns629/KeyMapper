@@ -17,7 +17,7 @@ if __name__ == '__main__':
     print(km_dict['d.a'][0]['d'])
     print(km_dict['d.a.[0].d'])  # Can use: 0-9, [0-9], (0-9), {0-9}
 
-    if re.match(r'((y|Y)es)', input('Continue tests? (yes/no):')) is not None:
+    if re.match(r'((y|Y)es)', input('Continue tests? (yes/no): ')) is not None:
         questions = ['What is your name: ', 'What is your email: ', 'What is your password: ', 'How many servers do you want to add: ', 'What is the ip: ', 'What is the port: ']
         keys = ['user.name', 'user.email', 'user.password', 'servers']
         config = {'user': {'name': '', 'email': '', 'password': ''}, 'servers': []}

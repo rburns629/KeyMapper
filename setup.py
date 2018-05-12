@@ -13,7 +13,7 @@ setup(
     description='A dynamic dictionary iteration tool that allows you to get and set keys and values with a single key declaration',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/pypa/sampleproject',
+    url='https://gitlab.com/rburns629/KeyMapper',
     author='Robert Burns',
     author_email='rburns629@gmail.com',
     classifiers=[
