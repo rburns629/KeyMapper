@@ -11,7 +11,6 @@
 
 
 ## Examples
----
 
 **Standard Dict:**
 
