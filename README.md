@@ -9,6 +9,15 @@
 - Great for key iteration and loops
 - KeyMapper functionality is not forced on you
 
+## Installation
+- You can install either via pypi:
+
+        pip install keymapper
+
+- Or, install it locally after the package has been unarchived:
+
+        pip install -e /destination
+
 
 ## Examples
 
@@ -78,8 +87,6 @@ print(km_dict['messages,message_1'])  # Prints: 'Hey there!'
 ```
 
 **Real World Example**
-
-- Question: What if you had a list of keys you could iterate through, and assign values to, in correlation with a list of inputs that you'd like to prompt for, to ask the user to populate those values?
 
 ```python
 from keymapper import KeyMapper

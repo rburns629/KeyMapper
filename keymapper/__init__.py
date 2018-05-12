@@ -1,5 +1,4 @@
 import json
-from functools import reduce
 
 class KeyMapper(dict):
     """
@@ -22,28 +21,24 @@ class KeyMapper(dict):
 
     def __getattr__(self, attr):
         try:
-            # print(f'__getattr__(attr: {attr})')
             return self.get(attr)
         except Exception as e:
             raise e
 
     def __setattr__(self, key, value):
         try:
-            # print(f'__setattr__(key: {key}, value: {value})')
             self.__setitem__(key, value)
         except Exception as e:
             raise e
 
     def __delattr__(self, item):
         try:
-            # print(f'__delattr__(item: {item})')
             self.__delitem__(item)
         except Exception as e:
             raise e
 
     def __getitem__(self, key):
         try:
-            # print(f'__getitem__(key: {key})')
             if self.__delimiter in key:
                 return self.mapper(self.__dict__, key.split(self.__delimiter), self.__getitem__.__name__)
             else:
@@ -53,7 +48,6 @@ class KeyMapper(dict):
 
     def __setitem__(self, key, value):
         try:
-            # print(f'__setitem__(key: {key}, value: {value})')
             if self.__delimiter in key:
                 self.mapper(self.__dict__, key.split(self.__delimiter), self.__setitem__.__name__, value)
             else:
@@ -64,7 +58,6 @@ class KeyMapper(dict):
 
     def __delitem__(self, key):
         try:
-            # print(f'__delitem__(key: {key})')
             if self.__delimiter in key:
                 self.mapper(self.__dict__, key.split(self.__delimiter), self.__delitem__.__name__)
             else:

@@ -1,0 +1,7 @@
+MANIFEST.in
+setup.py
+keymapper/__init__.py
+keymapper.egg-info/PKG-INFO
+keymapper.egg-info/SOURCES.txt
+keymapper.egg-info/dependency_links.txt
+keymapper.egg-info/top_level.txt
