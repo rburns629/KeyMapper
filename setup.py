@@ -26,7 +26,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='dict dot map dynamic',
+    keywords='dict dot delimeter key map dynamic',
     packages=find_packages(exclude=['tests']),
     project_urls={
         'Bug Reports': 'https://gitlab.com/rburns629/KeyMapper/issues',
