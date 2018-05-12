@@ -107,7 +107,3 @@ print(km_dict)  # Prints: ... Well, whatever you entered as your input values! T
 for i in range(len(km_dict['servers'])):
     print(km_dict['servers.{}.ip'.format(i)])  # Prints the IP for each index iterated through
 ```
-
-
-
-
