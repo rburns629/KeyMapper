@@ -10,7 +10,7 @@ with open(os.path.join(ROOT_DIR, 'README.md'), 'r') as f:
 setup(
     name='keymapper',
     version='1.0.0', 
-    description='A dynamic dictionary iteration tool that allows you to get and set keys and values with a single key declaration',
+    description='A dynamic dictionary iteration tool that allows you to set and retrieve values with a single key declaration',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://gitlab.com/rburns629/KeyMapper',

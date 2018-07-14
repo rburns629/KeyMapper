@@ -1,5 +1,7 @@
 .DS_Store
-/.vscode/
-/.idea/
-/__pycache__/
+/.vscode
+/.idea
+/__pycache__
 */__pycache__/
+/dist
+/keymapper.egg-info

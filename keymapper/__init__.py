@@ -86,15 +86,18 @@ class KeyMapper(dict):
                             return cls.mapper(d[s][int(m[1].strip('][])()}{'))], m[2:], callback, *args, **kwargs)
                     elif s == m[-1] and i == len(m) - 1:
                         if callback == '__setitem__':
-                            d[s] = args[0]; return None
-                        elif callback == '__delitem__': 
-                            del d[s]; return None
+                            d[s] = args[0]
+                            return None
+                        elif callback == '__delitem__':
+                            del d[s]
+                            return None
                         else: 
                             return d[s]
                 else:
                     if i == len(m) - 1:
                         if callback == '__setitem__': 
-                            d[m[-1]] = args[0]; return None
+                            d[m[-1]] = args[0]
+                            return None
                     else: 
                         raise KeyError('{}'.format(m[i]))
         except Exception as e:
