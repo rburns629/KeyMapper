@@ -1,4 +1,5 @@
-import json
+import json, re
+
 
 class KeyMapper(dict):
     """
@@ -6,9 +7,9 @@ class KeyMapper(dict):
         km = KeyMapper({'messages': {'message1': 'Hello World!'}}})
         print(km['messages.message1'])
     Variables:
-        __delimiter is set to dot-notation by default, unless specified otherwise.
+        __delimiter__ is set to dot-notation by default, unless specified otherwise.
     """
-    __delimiter = "."  # Default
+    __delimiter__ = "."  # Default
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -17,7 +18,7 @@ class KeyMapper(dict):
                 for k, v in arg.items():
                     self.__dict__.update({k: v})
         if kwargs:
-            self.__delimiter = kwargs['delimiter']
+            self.__delimiter__ = kwargs['delimiter']
 
     def __getattr__(self, attr):
         try:
@@ -39,8 +40,8 @@ class KeyMapper(dict):
 
     def __getitem__(self, key):
         try:
-            if self.__delimiter in key:
-                return self.mapper(self.__dict__, key.split(self.__delimiter), self.__getitem__.__name__)
+            if self.__delimiter__ in key:
+                return self.mapper(self.__dict__, key.split(self.__delimiter__), self.__getitem__.__name__)
             else:
                 return self.get(key)
         except Exception as e:
@@ -48,8 +49,8 @@ class KeyMapper(dict):
 
     def __setitem__(self, key, value):
         try:
-            if self.__delimiter in key:
-                self.mapper(self.__dict__, key.split(self.__delimiter), self.__setitem__.__name__, value)
+            if self.__delimiter__ in key:
+                self.mapper(self.__dict__, key.split(self.__delimiter__), self.__setitem__.__name__, value)
             else:
                 super().__setitem__(key, value)
                 self.__dict__.update({key: value})
@@ -58,8 +59,8 @@ class KeyMapper(dict):
 
     def __delitem__(self, key):
         try:
-            if self.__delimiter in key:
-                self.mapper(self.__dict__, key.split(self.__delimiter), self.__delitem__.__name__)
+            if self.__delimiter__ in key:
+                self.mapper(self.__dict__, key.split(self.__delimiter__), self.__delitem__.__name__)
             else:
                 super().__delitem__(key)
                 del self.__dict__[key]
@@ -76,29 +77,30 @@ class KeyMapper(dict):
 
     @classmethod
     def mapper(cls, d, m, callback, *args, **kwargs):
-        try:
-            for i, s in enumerate(m):
-                if s in d.keys():
-                    if s != m[-1] or i != len(m) - 1:
-                        if isinstance(d[s], dict): 
-                            return cls.mapper(d[s], m[1:], callback, *args, **kwargs)
-                        elif isinstance(d[s], (list, tuple, set)):
-                            return cls.mapper(d[s][int(m[1].strip('][])()}{'))], m[2:], callback, *args, **kwargs)
-                    elif s == m[-1] and i == len(m) - 1:
+        for i, k in enumerate(m):
+            key = k if not re.search(r'[0-9]+', k) else int(k)
+            try:
+                if str(key) in d or type(key) == int and d[key]:
+                    if str(key) != m[-1] or i != len(m) - 1:
+                        return cls.mapper(d[key], m[1:], callback, *args, **kwargs)
+                    elif str(key) == m[-1] and i == len(m) - 1:
                         if callback == '__setitem__':
-                            d[s] = args[0]
+                            d[key] = args[0]
                             return None
                         elif callback == '__delitem__':
-                            del d[s]
+                            del d[key]
                             return None
-                        else: 
-                            return d[s]
+                        else:
+                            return d[key]
+            except Exception as e:
+                raise e
+            else:
+                if i == len(m) - 1:
+                    if callback == '__setitem__':
+                        d[m[-1]] = args[0]
+                        return None
                 else:
-                    if i == len(m) - 1:
-                        if callback == '__setitem__': 
-                            d[m[-1]] = args[0]
-                            return None
-                    else: 
-                        raise KeyError('{}'.format(m[i]))
-        except Exception as e:
-            raise e
+                    raise KeyError('{}'.format(m[i]))
+        else:
+            if callback == '__getitem__':
+                return d
