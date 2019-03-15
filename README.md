@@ -62,9 +62,9 @@ km_dict = KeyMapper(my_dict)
 print(km_dict['objects'][1]['obj2'])  # Prints: 'There!'
 
 # KeyMapper - does not care what type of iterable
-print(km_dict['objects.[1].obj2'])  # Prints: 'There!'
-print(km_dict['objects.(1).obj2'])  # Prints: 'There!'
-print(km_dict['objects.{1}.obj2'])  # Prints: 'There!'
+print(km_dict['objects.1.obj2'])  # Prints: 'There!'
+print(km_dict['objects.1.obj2'])  # Prints: 'There!'
+print(km_dict['objects.1.obj2'])  # Prints: 'There!'
 
 # Or don't even declare the data type
 print(km_dict['objects.1.obj2'])  # Prints: 'There!'
