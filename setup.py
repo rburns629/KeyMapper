@@ -9,8 +9,8 @@ with open(os.path.join(ROOT_DIR, 'README.md'), 'r') as f:
 
 setup(
     name='keymapper',
-    version='1.0.0', 
-    description='A dynamic dictionary iteration tool that allows you to set and retrieve values with a single key declaration',
+    version='1.0.1',
+    description='Dynamic dictionary iteration tool that allows you to set and retrieve values with single key declaration',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://gitlab.com/rburns629/KeyMapper',
@@ -26,7 +26,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='dict dot delimeter key map dynamic',
+    keywords='dict dot delimiter key map dynamic dictionary object notation',
     packages=find_packages(exclude=['tests']),
     project_urls={
         'Bug Reports': 'https://gitlab.com/rburns629/KeyMapper/issues',
