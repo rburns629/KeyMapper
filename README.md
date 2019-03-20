@@ -86,7 +86,7 @@ print(km_dict['messages']['message_1'])  # Prints: 'Hey there!'
 print(km_dict['messages,message_1'])  # Prints: 'Hey there!'
 ```
 
-**Real World Example**
+**Example**
 
 ```python
 from keymapper import KeyMapper
