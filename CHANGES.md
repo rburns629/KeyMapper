@@ -1,4 +1,15 @@
 
+**Version 1.0.2:**
+- Date: December 9th, 2019
+- Author: Robert Burns
+- Changes:
+    - Fixed regex match bug when searching for numbers
+    - Added \_\_repr\_\_
+    - Added \_\_str\_\_
+    - Renamed mapper to \_\_mapper\_\_
+    
+---
+
 **Version 1.0.1:**
 - Date: March 18th, 2019
 - Author: Robert Burns

@@ -9,8 +9,9 @@ with open(os.path.join(ROOT_DIR, 'README.md'), 'r') as f:
 
 setup(
     name='keymapper',
-    version='1.0.1',
-    description='Dynamic dictionary iteration tool that allows you to set and retrieve values with single key declaration',
+    version='1.0.2',
+    license='MIT',
+    description='Dictionary key mapping tool that enables the user to declare a single keyword regardless of depth.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://gitlab.com/rburns629/KeyMapper',
@@ -25,6 +26,8 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     keywords='dict dot delimiter key map dynamic dictionary object notation',
     packages=find_packages(exclude=['tests']),

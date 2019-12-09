@@ -20,6 +20,12 @@ class KeyMapper(dict):
         if kwargs:
             self.__delimiter__ = kwargs['delimiter']
 
+    def __repr__(self):
+        return '{}(dict={})'.format(self.__class__, self.__dict__)
+
+    def __str__(self):
+        return 'Key Mapped: {}'.format(self.__dict__)
+
     def __getattr__(self, attr):
         try:
             return self.get(attr)
@@ -41,7 +47,7 @@ class KeyMapper(dict):
     def __getitem__(self, key):
         try:
             if self.__delimiter__ in key:
-                return self.mapper(self.__dict__, key.split(self.__delimiter__), self.__getitem__.__name__)
+                return self.__mapper__(self.__dict__, key.split(self.__delimiter__), self.__getitem__.__name__)
             else:
                 return self.get(key)
         except Exception as e:
@@ -50,7 +56,7 @@ class KeyMapper(dict):
     def __setitem__(self, key, value):
         try:
             if self.__delimiter__ in key:
-                self.mapper(self.__dict__, key.split(self.__delimiter__), self.__setitem__.__name__, value)
+                self.__mapper__(self.__dict__, key.split(self.__delimiter__), self.__setitem__.__name__, value)
             else:
                 super().__setitem__(key, value)
                 self.__dict__.update({key: value})
@@ -60,7 +66,7 @@ class KeyMapper(dict):
     def __delitem__(self, key):
         try:
             if self.__delimiter__ in key:
-                self.mapper(self.__dict__, key.split(self.__delimiter__), self.__delitem__.__name__)
+                self.__mapper__(self.__dict__, key.split(self.__delimiter__), self.__delitem__.__name__)
             else:
                 super().__delitem__(key)
                 del self.__dict__[key]
@@ -76,13 +82,13 @@ class KeyMapper(dict):
             raise e
 
     @classmethod
-    def mapper(cls, d, m, callback, *args, **kwargs):
+    def __mapper__(cls, d, m, callback, *args, **kwargs):
         for i, k in enumerate(m):
-            key = k if not re.search(r'[0-9]+', k) else int(k)
+            key = k if not re.search(r'^[0-9]+$', k) else int(k)
             try:
                 if str(key) in d or type(key) == int and d[key]:
                     if str(key) != m[-1] or i != len(m) - 1:
-                        return cls.mapper(d[key], m[1:], callback, *args, **kwargs)
+                        return cls.__mapper__(d[key], m[1:], callback, *args, **kwargs)
                     elif str(key) == m[-1] and i == len(m) - 1:
                         if callback == '__setitem__':
                             d[key] = args[0]
