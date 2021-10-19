@@ -55,7 +55,12 @@ print(km_dict['messages.message_1'])  # Prints: 'Hey there!'
 ```python
 from keymapper import KeyMapper
 
-my_dict = {'messages': {'message_1': 'Hey there!'}, 'objects': [{'obj1': 'Hi!'}], 'objects2': ({'obj2': 'There!'}), 'objects3': {'A', 'Peoples!', 'Friend?'}}
+my_dict = {
+   'messages': {'message_1': 'Hey there!'}, 
+   'objects': [{'obj1': 'Hi!'}], 
+   'objects2': ({'obj2': 'There!'}), 
+   'objects3': {'A', 'Peoples!', 'Friend?'}
+}
 km_dict = KeyMapper(my_dict)
 
 # Standard
