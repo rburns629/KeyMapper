@@ -55,16 +55,16 @@ print(km_dict['messages.message_1'])  # Prints: 'Hey there!'
 ```python
 from keymapper import KeyMapper
 
-my_dict = {'messages': {'message_1': 'Hey there!'}, 'objects': [{'obj1': 'Hi!'}, {'obj2': 'There!'}, {'obj3': 'Peoples!'}]}
+my_dict = {'messages': {'message_1': 'Hey there!'}, 'objects': [{'obj1': 'Hi!'}], 'objects2': ({'obj2': 'There!'}), 'objects3': {'A', 'Peoples!', 'Friend?'}}
 km_dict = KeyMapper(my_dict)
 
 # Standard
 print(km_dict['objects'][1]['obj2'])  # Prints: 'There!'
 
 # KeyMapper - does not care what type of iterable
-print(km_dict['objects.1.obj2'])  # Prints: 'There!'
-print(km_dict['objects.1.obj2'])  # Prints: 'There!'
-print(km_dict['objects.1.obj2'])  # Prints: 'There!'
+print(km_dict['objects2.0.obj2'])  # Prints: 'There!'
+print(km_dict['objects3.1'])  # Prints: 'Peoples!'
+print(km_dict['objects.0.obj1'])  # Prints: 'Hi!'
 
 # Or don't even declare the data type
 print(km_dict['objects.1.obj2'])  # Prints: 'There!'
