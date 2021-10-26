@@ -1,6 +1,8 @@
-import json, re
+from dataclasses import dataclass
+import json
+import re
 
-
+@dataclass
 class KeyMapper(dict):
     """
     Example:
@@ -10,21 +12,33 @@ class KeyMapper(dict):
         __delimiter__ is set to dot-notation by default, unless specified otherwise.
     """
     __delimiter__ = "."  # Default
+    __schema__    = {}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if kwargs:
+            if 'delimiter' in kwargs:
+                self.__delimiter__ = kwargs['delimiter']
+            elif 'schema' in kwargs:
+                self.__schema__ = kwargs['schema']
+        
         for arg in args:
             if isinstance(arg, dict):
                 for k, v in arg.items():
-                    self.__dict__.update({k: v})
-        if kwargs:
-            self.__delimiter__ = kwargs['delimiter']
+                    if self.__schema__:
+                        if type(self.__schema__[k]) == type(v):
+                            self.__dict__.update({k: v})
+                        else:
+                            raise ValueError(
+                                f'TypeMismatchError: value {type(v)} does not match type {type(self.__schema__[k])} defined in schema')
+                    else:
+                        self.__dict__.update({k: v})
 
     def __repr__(self):
         return '{}(dict={})'.format(self.__class__, self.__dict__)
 
     def __str__(self):
-        return 'Key Mapped: {}'.format(self.__dict__)
+        return '{}'.format(self.__dict__)
 
     def __getattr__(self, attr):
         try:
@@ -56,7 +70,8 @@ class KeyMapper(dict):
     def __setitem__(self, key, value):
         try:
             if self.__delimiter__ in key:
-                self.__mapper__(self.__dict__, key.split(self.__delimiter__), self.__setitem__.__name__, value)
+                self.__mapper__(self.__dict__, key.split(
+                    self.__delimiter__), self.__setitem__.__name__, value)
             else:
                 super().__setitem__(key, value)
                 self.__dict__.update({key: value})
@@ -66,7 +81,8 @@ class KeyMapper(dict):
     def __delitem__(self, key):
         try:
             if self.__delimiter__ in key:
-                self.__mapper__(self.__dict__, key.split(self.__delimiter__), self.__delitem__.__name__)
+                self.__mapper__(self.__dict__, key.split(
+                    self.__delimiter__), self.__delitem__.__name__)
             else:
                 super().__delitem__(key)
                 del self.__dict__[key]
