@@ -9,7 +9,7 @@ with open(os.path.join(ROOT_DIR, 'README.md'), 'r') as f:
 
 setup(
     name='keymapper',
-    version='1.0.2',
+    version='1.0.5',
     license='MIT',
     description='Dictionary key mapping tool that enables the user to declare a single keyword regardless of depth.',
     long_description=long_description,
@@ -22,9 +22,6 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',

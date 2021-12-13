@@ -26,7 +26,7 @@ class KeyMapper(dict):
             if isinstance(arg, dict):
                 for k, v in arg.items():
                     if self.__schema__:
-                        if type(self.__schema__[k]) == type(v):
+                        if self.__schema__[k] == type(v):
                             self.__dict__.update({k: v})
                         else:
                             raise ValueError(
