@@ -1,15 +1,12 @@
-import sys, os, json
+import json
+from pathlib import Path
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)).split('/tests')[0])
+from keymapper import KeyMapper
 
-if __name__ == '__main__':
-    from keymapper import KeyMapper
 
-    json_t_f    = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'etc', 'test_json.json'), 'r')
-    json_read   = json.loads(json_t_f.read())
-    km          = KeyMapper(json_read)
-
-    print(km['web-app']['servlet'][0]['init-param'])
-    print(km['web-app.servlet.0.init-param'])
-
-    json_t_f.close()
+def test_paths_into_a_json_document():
+    data = json.loads((Path(__file__).parent / "etc" / "test_json.json").read_text())
+    km = KeyMapper(data)
+    assert km["web-app.servlet.0.init-param"] == data["web-app"]["servlet"][0]["init-param"]
+    assert km["web-app.servlet.0.init-param.maxUrlLength"] == data["web-app"]["servlet"][0]["init-param"]["maxUrlLength"]
+    assert json.loads(km.pprint()) == data
