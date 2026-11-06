@@ -1,121 +1,79 @@
 # KeyMapper
 
-**KeyMapper is a subclass of the dictionary class, which allows you to:**
-- Assign keys and values dynamically 
-- Choose what delimiter you want (default is dot-notation: .)
-- Access all keys and values in a single key declaration regardless of type (list, tuple, set)
-- Is treated as a dict type by default
-- Initializes an empty dictionary, or accepts an existing dict upon class declaration
-- Great for key iteration and loops
-- KeyMapper functionality is not forced on you
+A `dict` whose keys can also be paths into nested data. Read, write, and
+delete deep values with one key, such as `km["servers.0.ip"]`, instead of
+`km["servers"][0]["ip"]`.
+
+- It is a real `dict`: `isinstance(km, dict)`, `json.dumps(km)`, and every dict
+  method work as usual.
+- A path walks mappings by key and lists or tuples by index, negative indexes
+  included.
+- A missing path raises `KeyError` naming it, as a dict does; `get` returns a
+  default instead.
+- Writing to a path creates the mappings it needs.
+- A key that exists exactly as written always wins, so keys that contain the
+  delimiter still work.
 
 ## Installation
-- You can install either via pypi:
 
-        pip install keymapper
+    pip install keymapper
 
-- Or, install it locally after the package has been unarchived:
-
-        pip install -e /destination
-
+Python 3.11 or newer.
 
 ## Examples
 
-**Standard Dict:**
+**Paths:**
 
 ```python
 from keymapper import KeyMapper
 
-km_dict = KeyMapper()
-print(km_dict)
-# Prints: {} 
+km = KeyMapper({"servers": [{"ip": "10.0.0.1"}, {"ip": "10.0.0.2"}]})
 
-km_dict['key1'] = 'All the keys!'
-print(km_dict)
-# Prints: {'key1': 'All the keys!'}
+km["servers.1.ip"]       # '10.0.0.2'
+km["servers.-1.ip"]      # '10.0.0.2', the last server
+km["servers", 0, "ip"]   # '10.0.0.1', a tuple path
+km.get("servers.5.ip")   # None
+"servers.0.ip" in km     # True
 ```
 
-**Nested Dict:**
+**Writing and deleting:**
 
 ```python
-from keymapper import KeyMapper
-
-my_dict = {'messages': {'message_1': 'Hey there!'}}
-km_dict = KeyMapper(my_dict)
-
-# Standard
-print(km_dict['messages']['message_1'])  # Prints: 'Hey there!'
-
-# KeyMapper
-print(km_dict['messages.message_1'])  # Prints: 'Hey there!'
+km = KeyMapper()
+km["user.name"] = "Ada"          # creates km["user"]
+km["user.email"] = "ada@example.com"
+del km["user.email"]
+print(km)                        # KeyMapper({'user': {'name': 'Ada'}})
 ```
 
-**Dict with iterables:**
+**Another delimiter, or keys that contain one:**
 
 ```python
-from keymapper import KeyMapper
+km = KeyMapper({"a": {"b": 1}}, delimiter="/")
+km["a/b"]                        # 1
 
-my_dict = {
-   'messages': {'message_1': 'Hey there!'}, 
-   'objects': [{'obj1': 'Hi!'}], 
-   'objects2': ({'obj2': 'There!'}), 
-   'objects3': {'A', 'Peoples!', 'Friend?'}
-}
-km_dict = KeyMapper(my_dict)
-
-# Standard
-print(km_dict['objects'][1]['obj2'])  # Prints: 'There!'
-
-# KeyMapper - does not care what type of iterable
-print(km_dict['objects2.0.obj2'])  # Prints: 'There!'
-print(km_dict['objects3.1'])  # Prints: 'Peoples!'
-print(km_dict['objects.0.obj1'])  # Prints: 'Hi!'
-
-# Or don't even declare the data type
-print(km_dict['objects.1.obj2'])  # Prints: 'There!'
+km = KeyMapper({"version.major": 2, "build": {"tag.name": "v2"}})
+km["version.major"]              # 2, the key exists as written
+km["build", "tag.name"]          # 'v2', a tuple keeps each part whole
 ```
 
-**Dict with different delimieter:**
+**Keys that look like numbers:** a part such as `"0"` matches the key `"0"`
+first, then the key `0`, so both kinds of dictionary work. Sets have no order,
+so a path cannot index into one.
 
-```python
-from keymapper import KeyMapper
+## Upgrading from 1.x
 
-my_dict = {'messages': {'message_1': 'Hey there!'}, 'objects': [{'obj1': 'Hi!'}, {'obj2': 'There!'}, {'obj3': 'Peoples!'}]}
+Version 2.0 makes KeyMapper behave like a dict, which changes four things:
 
-km_dict = KeyMapper(my_dict, delimiter=',')
+- A missing key raises `KeyError`; use `get` for a default.
+- Attribute access (`km.name`) is gone; use `km["name"]`.
+- The `schema` option is gone; validate data with a library made for it, such
+  as pydantic.
+- Writing a path creates missing mappings instead of raising `KeyError`.
 
-# Standard
-print(km_dict['messages']['message_1'])  # Prints: 'Hey there!'
+See [CHANGES.md](CHANGES.md).
 
-# KeyMapper with new delimeter
-print(km_dict['messages,message_1'])  # Prints: 'Hey there!'
-```
+## Development
 
-**Example**
-
-```python
-from keymapper import KeyMapper
-
-questions = ['What is your name: ', 'What is your email: ', 'What is your password: ', 'How many servers do you want to add: ', 'What is the ip: ', 'What is the port: ']
-keys = ['user.name', 'user.email', 'user.password', 'servers']
-config = {'user': {'name': '', 'email': '', 'password': ''}, 'servers': []}
-
-km_dict = KeyMapper(config)
-
-for i in range(len(questions)):
-    if i < 3:
-        km_dict[keys[i]] = input(questions[i])
-    else:
-        for r in range(int(input(questions[i]))):
-            server_info = {'ip': '', 'port': ''}
-            for i, k in enumerate(questions[4:]):
-                if i < 1:
-                    server_info['ip'] = input(k)
-                else:
-                    server_info['port'] = input(k)
-            km_dict[keys[len(keys) - 1]].append(server_info)
-        break
-print(km_dict)  # Prints: ... Well, whatever you entered as your input values! Try it if you don't believe me ;)
-for i in range(len(km_dict['servers'])):
-    print(km_dict['servers.{}.ip'.format(i)])  # Prints the IP for each index iterated through
-```
+    python -m venv .venv && .venv/bin/pip install -e . pytest
+    .venv/bin/python -m pytest

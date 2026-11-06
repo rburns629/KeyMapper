@@ -1,7 +1,9 @@
 .DS_Store
 /.vscode
 /.idea
-/__pycache__
-*/__pycache__/
+__pycache__/
+/.pytest_cache
+/.venv
+/build
 /dist
-/keymapper.egg-info
+*.egg-info/

@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "keymapper"
+dynamic = ["version"]
+description = "A dict whose keys can also be paths into nested data, such as km['servers.0.ip']."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Robert Burns" }]
+requires-python = ">=3.11"
+keywords = ["dict", "dot notation", "path", "nested", "json", "mapping"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Source = "https://github.com/rburns629/KeyMapper"
+Issues = "https://github.com/rburns629/KeyMapper/issues"
+Changelog = "https://github.com/rburns629/KeyMapper/blob/master/CHANGES.md"
+
+[tool.setuptools]
+packages = ["keymapper"]
+
+[tool.setuptools.dynamic]
+version = { attr = "keymapper.__version__" }
+
+[tool.setuptools.package-data]
+keymapper = ["py.typed"]

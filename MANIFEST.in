@@ -1,1 +1,2 @@
-recursive-include tests/etc/*
+include LICENSE README.md CHANGES.md
+recursive-include tests *.py *.json
